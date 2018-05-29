@@ -1,15 +1,17 @@
 package com.example.auctionapp.domain.auction.event;
 
 import com.example.auctionapp.domain.auction.Auction;
+import com.example.auctionapp.domain.auction.bid.Bid;
 import org.springframework.context.ApplicationEvent;
 
-public class AuctionCreatedEvent extends ApplicationEvent{
+public class BidCreatedEvent extends ApplicationEvent {
 
-    public AuctionCreatedEvent(Auction source) {
+    public BidCreatedEvent(Bid source) {
         super(source);
     }
+
     @Override
-    public Auction getSource(){
-        return (Auction) source;
+    public Bid getSource() {
+        return (Bid) source;
     }
 }

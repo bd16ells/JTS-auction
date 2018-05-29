@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.auction;
 
 import com.example.auctionapp.domain.auction.event.AuctionCreatedEvent;
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Setter
 public class AuctionServiceImpl implements AuctionService{
 
     private AuctionRepository auctionRepository;

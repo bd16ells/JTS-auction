@@ -31,9 +31,11 @@ public class BidController {
     public ResponseEntity<Bid> save(@PathVariable("auctionId") Optional<Auction> auction ,
                                         @Valid @RequestBody Bid bid)
     {
-        return auction.isPresent() ? new ResponseEntity<>(bidService.save(auction.get(), bid), HttpStatus.CREATED) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+        Bid saved = bidService.save(auction.get(), bid);
+        return auction.isPresent() ? new ResponseEntity<Bid>(saved, HttpStatus.CREATED) :
+                new ResponseEntity<Bid>(HttpStatus.NOT_FOUND);
+        //return new ResponseEntity<Bid>(bidService.save(auction.get(), bid), HttpStatus.CREATED);
+//        return bid;
     }
 
     @DeleteMapping("/auctions/{auctionId}/bids/{bidId}")

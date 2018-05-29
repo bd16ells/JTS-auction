@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Indexed;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -41,6 +42,8 @@ public class AbstractEntity {
     @LastModifiedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     protected ZonedDateTime lastModifiedDatetime;
+
+    private ZonedDateTime expiryDate;
 
     @Version
     @Column(nullable = false)

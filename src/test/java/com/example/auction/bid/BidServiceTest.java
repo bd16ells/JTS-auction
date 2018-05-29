@@ -5,6 +5,8 @@ import com.example.auctionapp.domain.auction.AuctionRepository;
 import com.example.auctionapp.domain.auction.bid.Bid;
 import com.example.auctionapp.domain.auction.bid.BidRepository;
 import com.example.auctionapp.domain.auction.bid.BidServiceImpl;
+import com.example.auctionapp.domain.auction.bid.validation.rule.BidRuleEngine;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,6 +15,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -22,6 +27,7 @@ import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 @AutoConfigureMockMvc
+@Import(BidRuleEngine.class)
 public class BidServiceTest {
 
     @Mock
@@ -32,9 +38,19 @@ public class BidServiceTest {
 
     @InjectMocks
     BidServiceImpl bidService;
+    @Mock
+    BidRuleEngine bidRuleEngine;
+
 
     Auction auction = new Auction();
 
+    @Before
+    public void init(){
+//        bidRuleEngine = Mockito.mock(bidRuleEngine.getClass());
+        auction.setId(1L);
+        auction.setName("name");
+        auction.setDescription("Description");
+    }
 
     @Test
     public void testSave(){
@@ -67,7 +83,7 @@ public class BidServiceTest {
         current.setId(1L);
         Bid incoming = new Bid();
         incoming.setAmount(new BigDecimal("45.00"));
-
+        incoming.setId(2L);
         Mockito.when(bidRepository.save(current)).thenReturn(current);
 
 

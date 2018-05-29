@@ -41,17 +41,15 @@ public class AuctionAspects {
 
         Auction auction = (Auction) joinPoint.getArgs()[0];
         Bid bid = (Bid) joinPoint.getArgs()[1];
-        ////////////////////////////////////////////
-        logger.info(userContextService.getCurrentUsername());
-        //////////////////////////////////////////////
+
         if(auction.getHighestBid().isPresent()){
             if(bid.getAmount().doubleValue() > auction.getHighestBid().get().getAmount().doubleValue() &&
-                    !SecurityContextHolder.getContext().getAuthentication().getName().equals(
+                    !userContextService.getCurrentUsername().equals(
                             auction.getHighestBid().get().getCreatedBy())){
 
                 logger.info("\t Emailing '{}' that their bid of {} was outbid by '{}' with an amount of {}",
                         auction.getHighestBid().get().getCreatedBy(), auction.getHighestBid().get().getAmount(),
-                        SecurityContextHolder.getContext().getAuthentication().getName(),
+                        userContextService.getCurrentUsername(),
                         bid.getAmount() );
             }
         }

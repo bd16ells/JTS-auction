@@ -1,6 +1,6 @@
-INSERT into USER (id, username,  password) VALUES
-(1, 'admin','$2a$12$esTL5RGN9xDixtb3J7DFGuVLQnL6TLxW4ADIm.0KH/SO458uNiYLW'),
-(2, 'user','$2a$12$esTL5RGN9xDixtb3J7DFGuVLQnL6TLxW4ADIm.0KH/SO458uNiYLW'); --password
+INSERT into USER (id, username,  password, enabled) VALUES
+(1, 'admin','$2a$12$esTL5RGN9xDixtb3J7DFGuVLQnL6TLxW4ADIm.0KH/SO458uNiYLW', true),
+(2, 'user','$2a$12$esTL5RGN9xDixtb3J7DFGuVLQnL6TLxW4ADIm.0KH/SO458uNiYLW', true); --password
 
 DROP TABLE IF EXISTS role;
 

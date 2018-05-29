@@ -2,16 +2,19 @@ package com.example.auction.bid;
 
 import com.example.auctionapp.domain.auction.Auction;
 import com.example.auctionapp.domain.auction.bid.Bid;
+import com.example.auctionapp.domain.auction.bid.BidComparator;
 import com.example.auctionapp.domain.auction.bid.BidController;
 import com.example.auctionapp.domain.auction.bid.BidServiceImpl;
 import com.example.auctionapp.security.WebSecurityConfig;
 import com.example.auctionapp.domain.user.UserRepository;
+import com.example.validation.exception.WebApiExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SuppressWarnings("Duplicates")
 @RunWith(SpringRunner.class)
 @WebMvcTest(BidController.class)
-@Import(WebSecurityConfig.class)
+@Import({WebSecurityConfig.class, BidComparator.class})
 public class BidControllerTests {
 
     @Autowired
@@ -46,6 +49,9 @@ public class BidControllerTests {
 
     @MockBean
     private BidServiceImpl bidService;
+
+    @MockBean
+    WebApiExceptionHandler webApiExceptionHandler;
 
     @MockBean
     UserRepository userRepository;
@@ -59,8 +65,12 @@ public class BidControllerTests {
 
     @Before
     public void before() {
+        auction1.setDescription("desc");
+        auction1.setName("name");
         auction1.setId(1L);
+        bid1.setAmount(new BigDecimal("45.00"));
         bid1.setId(1L);
+        bid2.setAmount(new BigDecimal("33.00"));
         bid2.setId(2L);
     }
 
@@ -112,7 +122,7 @@ public class BidControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[*].id", Matchers.contains(1,2)));
+                .andExpect(jsonPath("$[*].id", Matchers.contains(2,1)));
     }
 
 

@@ -4,7 +4,9 @@ import com.example.auctionapp.domain.auction.Auction;
 import com.example.auctionapp.domain.auction.AuctionNotFoundException;
 import com.example.auctionapp.domain.auction.AuctionRepository;
 import com.example.auctionapp.domain.auction.bid.validation.rule.BidRuleEngine;
+import com.example.auctionapp.domain.auction.event.BidCreatedEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -22,16 +24,22 @@ public class BidServiceImpl implements BidService {
     BidRepository bidRepository;
     AuctionRepository auctionRepository;
     BidRuleEngine bidRuleEngine;
+    ApplicationEventPublisher publisher;
     @Override
     public Bid save(Auction auction, Bid bid) {
         //bid is not already present
         executeRules(auction,bid);
         if(!auction.getBidById(bid.getId()).isPresent() ) {
+            if(bid.getId() == null){
+                publisher.publishEvent(new BidCreatedEvent(bid));
+            }
+
             auction.addBid(bid);
+
         }
 
         Bid savedBid =  bidRepository.save(bid);
-        Auction savedAuction = auctionRepository.save(auction);
+        auctionRepository.save(auction);
         return savedBid;
     }
 
