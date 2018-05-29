@@ -26,7 +26,7 @@ public class BidAspects {
         logger.info("\t Email regarding update/creation of Bid sent from {} ", joinPoint);
     }
     @Around("bidSave() && args(bid)")
-    public void bidFormat(ProceedingJoinPoint joinPoint, Bid bid) throws Throwable{
+    public Object bidFormat(ProceedingJoinPoint joinPoint, Bid bid) throws Throwable{
 
         BigDecimal newAmount = new BigDecimal(bid.getAmount().doubleValue());
         newAmount = newAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -37,6 +37,6 @@ public class BidAspects {
 
         Object[] args = new Object[]{bid};
 
-        joinPoint.proceed(args);
+        return joinPoint.proceed(args);
     }
 }

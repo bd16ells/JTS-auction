@@ -37,7 +37,7 @@ public class AuctionAspects {
     public void addBid(){}
 
     @Around("addBid()")// && args(bid, auction)")
-    public void  emailOldHighestBidder(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object  emailOldHighestBidder(ProceedingJoinPoint joinPoint) throws Throwable {
 
         Auction auction = (Auction) joinPoint.getArgs()[0];
         Bid bid = (Bid) joinPoint.getArgs()[1];
@@ -55,7 +55,7 @@ public class AuctionAspects {
                         bid.getAmount() );
             }
         }
-        joinPoint.proceed(joinPoint.getArgs());
+       return joinPoint.proceed(new Object[]{auction, bid});
     }
     @After("addBid()")
     public void emailNewHighestBidder(JoinPoint joinPoint) {
