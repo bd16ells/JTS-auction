@@ -27,14 +27,18 @@ public class BidServiceImpl implements BidService {
     ApplicationEventPublisher publisher;
     @Override
     public Bid save(Auction auction, Bid bid) {
-        //bid is not already present
         executeRules(auction,bid);
+        //bid is not already present
         if(!auction.getBidById(bid.getId()).isPresent() ) {
-            if(bid.getId() == null){
+            Long id = bid.getId();
+            // must add bid first, otherwise our eventListener does not know which
+            // auction the bid was placed on.
+            auction.addBid(bid);
+            if(id == null){
                 publisher.publishEvent(new BidCreatedEvent(bid));
             }
 
-            auction.addBid(bid);
+
 
         }
 

@@ -38,4 +38,6 @@ public class Bid extends AbstractEntity implements Comparable<Bid> {
     //////!!!!!!!!!!!!!?1?????????//////////
 //    @NotNull(message = "Must have an auction")
     private Auction auction;
+
+    private boolean didWin;
 }

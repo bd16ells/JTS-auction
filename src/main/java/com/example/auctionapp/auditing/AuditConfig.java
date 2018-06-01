@@ -34,6 +34,14 @@ public class AuditConfig {
 
     @Bean
     AuditorAware<String> userContextProvider(UserContextService userContextService){
-        return () -> Optional.of(userContextService.getCurrentUsername());
+        return () -> {
+            try {
+               return Optional.of(userContextService.getCurrentUsername());
+            }
+            catch(Exception e){
+                return Optional.of("System");
+            }
+
+            };
     }
 }

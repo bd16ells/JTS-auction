@@ -5,7 +5,7 @@ import com.example.auctionapp.domain.auction.AuctionRepository;
 import com.example.auctionapp.domain.auction.bid.Bid;
 import com.example.auctionapp.domain.auction.bid.BidRepository;
 import com.example.auctionapp.domain.auction.event.AccountExpiredEvent;
-import com.example.auctionapp.domain.auction.event.AuctionExpiredEvent;
+import com.example.auctionapp.domain.auction.event.AuctionCompletedEvent;
 import com.example.auctionapp.domain.auction.event.BidExpiredEvent;
 import com.example.auctionapp.domain.user.User;
 import com.example.auctionapp.domain.user.UserRepository;
@@ -35,7 +35,7 @@ public class EntityPurge {
         ZonedDateTime now = ZonedDateTime.now();
        List<Auction> removed =  auctionRepository.deleteByExpiryDateLessThan(now);
        for(Auction a: removed){
-           publisher.publishEvent(new AuctionExpiredEvent(a));
+           publisher.publishEvent(new AuctionCompletedEvent(a));
        }
 
     }

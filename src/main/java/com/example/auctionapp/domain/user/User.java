@@ -13,11 +13,11 @@ import java.util.List;
 
 @Entity
 @Data
-public class User  {
+public class User extends AbstractEntity{
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private long id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    private long id;
 
     @Column(unique = true)
     private String username;

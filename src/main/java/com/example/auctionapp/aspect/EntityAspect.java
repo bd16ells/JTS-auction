@@ -36,14 +36,16 @@ public class EntityAspect {
                 return pjp.proceed(new Object[]{auction});
             }
             else {
-                logger.info("Auctions {} already has expiry date of {}", auction, auction.getExpiryDate());
+                logger.info("{} already has expiry date of {}", auction, auction.getExpiryDate());
                 return pjp.proceed(pjp.getArgs());
             }
+            // make sure auction isn't expired
         }
         else if(obj instanceof Bid){
             Bid bid = (Bid) obj;
             if(bid.getExpiryDate() == null) {
-                bid.setExpiryDate(bid.getAuction().getExpiryDate());
+                //bid expires directly after auction
+                bid.setExpiryDate(bid.getAuction().getExpiryDate().plusSeconds(1L));
                 logger.info("Bid's expiration date has been set {}", bid.getExpiryDate());
                 return pjp.proceed(new Object[]{bid});
             }
